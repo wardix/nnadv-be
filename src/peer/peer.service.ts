@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { exec } from 'child_process';
 import * as yaml from 'js-yaml';
@@ -6,7 +6,9 @@ import * as fs from 'fs';
 
 @Injectable()
 export class PeerService {
-  constructor(private configService: ConfigService) {}
+  private readonly logger = new Logger()
+
+  constructor(private readonly configService: ConfigService) {}
 
   async advertise(user: string, upstream: string[], advertisement: any) {
     const configFile =
@@ -27,6 +29,7 @@ export class PeerService {
     const content = configHeader.join('\n') + data;
     const configFileHistory = `${configFile}-${timeStamp}`;
 
+    this.logger.warn(`advertise: user=${user}`)
     fs.writeFileSync(configFile, content, 'utf8');
     fs.writeFileSync(configFileHistory, content, 'utf8');
     exec(this.configService.get('POST_EXEC'));
@@ -41,6 +44,7 @@ export class PeerService {
       '/' +
       this.configService.get('PEER_DISABLE_AT_FILE');
 
+    this.logger.warn(`disable peer: peer=${peer} user=${user}`)
     fs.writeFileSync(file, content, 'utf8');
     exec(this.configService.get('PEER_DISABLE_WRAPPER_COMMAND'));
 
@@ -54,6 +58,7 @@ export class PeerService {
       '/' +
       this.configService.get('PEER_ENABLE_AT_FILE');
 
+    this.logger.warn(`enable peer: peer=${peer} user=${user}`)
     fs.writeFileSync(file, content, 'utf8');
     exec(this.configService.get('PEER_ENABLE_WRAPPER_COMMAND'));
 
