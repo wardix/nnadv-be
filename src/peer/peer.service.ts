@@ -32,35 +32,21 @@ export class PeerService {
     this.logger.warn(`advertise: user=${user}`)
     fs.writeFileSync(configFile, content, 'utf8');
     fs.writeFileSync(configFileHistory, content, 'utf8');
-    exec(this.configService.get('POST_EXEC'));
+    exec(this.configService.get('ADVERTISEMENT_POST_EXEC'));
 
     return 'OK';
   }
 
   async disablePeer(user: string, peer: string) {
-    const content = this.configService.get('PEER_DISABLE_COMMAND') + ' ' + peer;
-    const file =
-      this.configService.get('DATA_DIRECTORY') +
-      '/' +
-      this.configService.get('PEER_DISABLE_AT_FILE');
-
     this.logger.warn(`disable peer: peer=${peer} user=${user}`)
-    fs.writeFileSync(file, content, 'utf8');
-    exec(this.configService.get('PEER_DISABLE_WRAPPER_COMMAND'));
+    exec(`${this.configService.get('DISABLE_PEER_COMMAND')} ${peer}`);
 
     return 'OK';
   }
 
   async enablePeer(user: string, peer: string) {
-    const content = this.configService.get('PEER_ENABLE_COMMAND') + ' ' + peer;
-    const file =
-      this.configService.get('DATA_DIRECTORY') +
-      '/' +
-      this.configService.get('PEER_ENABLE_AT_FILE');
-
     this.logger.warn(`enable peer: peer=${peer} user=${user}`)
-    fs.writeFileSync(file, content, 'utf8');
-    exec(this.configService.get('PEER_ENABLE_WRAPPER_COMMAND'));
+    exec(`${this.configService.get('ENABLE_PEER_COMMAND')} ${peer}`);
 
     return 'OK';
   }
