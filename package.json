@@ -1,0 +1,26 @@
+{
+  "name": "nnadv-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "fastify": "^4.23.2",
+    "js-yaml": "^4.1.0",
+    "winston": "^3.11.0",
+    "winston-syslog": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.6.3",
+    "@types/winston-syslog": "^2.4.3",
+    "typescript": "^5.2.2"
+  }
+}
